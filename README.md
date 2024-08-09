@@ -15,11 +15,10 @@ Gallifrey Rules Sample is a sample application using the library [gallifrey-rule
 This sample application use case does the following:
 
 1. Listen to a kafka topic called `new-orders`
-2. Translate the message into a gallifrey-rules event using the event dispatcher `new-order-dispatcher`
-3. Runs the **rule** `notify-customer-new-order-rule`
-4. The **rule** will call the **data object** `customer-info-data-object` to get customer info, prepare an email 
-and then use the **action** `send-email-action` to email the customer that his new order was received.
-
+2. Translate the message into a gallifrey-rules event using the event dispatcher [new-order-dispatcher](https://github.com/ralphv/gallifrey-rules-sample/blob/main/src/modules/providers/NewOrdersDispatcher.ts)
+3. Runs the **rule** [notify-customer-new-order-rule](https://github.com/ralphv/gallifrey-rules-sample/blob/main/src/modules/plugins/rules/NotifyCustomerNewOrderRule.ts)
+4. The **rule** will call the **data object** [customer-info-data-object](https://github.com/ralphv/gallifrey-rules-sample/blob/main/src/modules/plugins/data-objects/CustomerInfoDataObject.ts) to get customer info, prepare an email 
+and then use the **action** [send-email-action](https://github.com/ralphv/gallifrey-rules-sample/blob/main/src/modules/plugins/actions/SendEmailAction.ts) to email the customer that his new order was received.
 
 ### Getting started
 
