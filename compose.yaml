@@ -1,0 +1,56 @@
+x-common-env: &common-env
+  restart: always
+
+services:
+  gallifrey-rules-kafka:
+    <<: *common-env
+    container_name: gallifrey-rules-kafka
+    hostname: gallifrey-rules-kafka
+    image: confluentinc/confluent-local:7.5.5
+    environment:
+      KAFKA_LISTENERS: INSIDE://0.0.0.0:29092,OUTSIDE://0.0.0.0:9092,CONTROLLER://:9093
+      KAFKA_ADVERTISED_LISTENERS: INSIDE://gallifrey-rules-kafka:29092,OUTSIDE://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT,CONTROLLER:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_NODE_ID: 1
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@gallifrey-rules-kafka:9093
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_LOG_DIRS: /var/lib/kafka/data
+    healthcheck:
+      test: ["CMD", "kafka-topics", "--bootstrap-server", "gallifrey-rules-kafka:29092", "--list"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    ports:
+      - "9092:9092"
+
+  gallifrey-rules-kafka-ui:
+    <<: *common-env
+    container_name: gallifrey-rules-kafka-ui
+    image: 'provectuslabs/kafka-ui:latest'
+    ports:
+      - "8080:8080"
+    environment:
+      - KAFKA_CLUSTERS_0_BOOTSTRAP_SERVERS=gallifrey-rules-kafka:29092
+      - KAFKA_CLUSTERS_0_NAME=gallifrey-rules
+    depends_on:
+      gallifrey-rules-kafka:
+        condition: service_healthy
+
+  gallifrey-rules-sample:
+    <<: *common-env
+    container_name: gallifrey-rules-sample
+    image: gallifrey-rules-sample
+    build:
+      context: .
+    environment:
+      GR_KAFKA_BROKERS: gallifrey-rules-kafka:29092
+      GR_IS_SCHEMA_FILE_MANDATORY: false
+    depends_on:
+      gallifrey-rules-kafka:
+        condition: service_healthy

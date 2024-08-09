@@ -1,0 +1,26 @@
+{
+  "name": "gallifrey-rules-sample",
+  "version": "1.0.0",
+  "description": "A minimal sample application utilizing gallifrey-rules",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "start": "npm install && npm run build && node dist/index.js",
+    "docker-build": "docker build -t gallifrey-rules-sample .",
+    "docker-start": "node index.js",
+    "docker-produce-message": "node scripts/produce-message.js",
+    "produce-message": "docker exec -it gallifrey-rules-sample npm run docker-produce-message"
+  },
+  "keywords": [],
+  "author": "Ralph Varjabedian",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^22.1.0",
+    "typescript": "^5.5.4"
+  },
+  "dependencies": {
+    "gallifrey-rules": "^0.1.6",
+    "kafkajs": "^2.2.4"
+  }
+}
