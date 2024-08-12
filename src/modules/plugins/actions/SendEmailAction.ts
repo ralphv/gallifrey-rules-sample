@@ -11,8 +11,10 @@ export default class SendEmailAction implements ActionInterface<SendEmailActionR
     }
 
     async trigger(engine: EngineActionInterface<SendEmailActionRequest>): Promise<void> {
+        const smtpServer = await engine.getConfigurationAccessor().getStringValue(`smtp-server`, 'default-smtp-server');
+
         // a dummy action that should queue an email
-        console.log(`Email sent to: "${engine.getPayload().recipientName}" <${engine.getPayload().emailAddress}>
+        console.log(`Email sent to: "${engine.getPayload().recipientName}" <${engine.getPayload().emailAddress}> using SMTP: ${smtpServer}
 ----------------------------------------------------------
 ${engine.getPayload().emailContents}
 ----------------------------------------------------------
