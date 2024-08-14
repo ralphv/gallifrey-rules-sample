@@ -1,6 +1,5 @@
 import {EventDispatcherInterface, GallifreyEventType, GallifreyProvider, ProviderType} from "gallifrey-rules";
 import * as os from "node:os";
-import {ModuleNames} from "../../ModuleNames";
 
 /**
  * Take a message from kafka topic: 'new-orders'
@@ -9,10 +8,6 @@ import {ModuleNames} from "../../ModuleNames";
  */
 @GallifreyProvider(ProviderType.EventDispatcher)
 export default class NewOrdersDispatcher implements EventDispatcherInterface<NewOrdersMessageType, NewOrdersMessageType> {
-    getModuleName(): string {
-        return ModuleNames.NewOrderDispatcher;
-    }
-
     getEvent(message: NewOrdersMessageType): GallifreyEventType<NewOrdersMessageType> {
         // translate the incoming kafka message of type NewOrdersMessageType into a Gallifrey Event type
         return {

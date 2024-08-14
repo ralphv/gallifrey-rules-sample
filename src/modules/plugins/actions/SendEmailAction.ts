@@ -1,15 +1,10 @@
 import {ActionInterface, EngineActionInterface, GallifreyPlugin, PluginType} from "gallifrey-rules";
-import {ModuleNames} from "../../../ModuleNames";
 
 /**
  * This defines a dummy Action that queues an email
  */
 @GallifreyPlugin(PluginType.Action)
 export default class SendEmailAction implements ActionInterface<SendEmailActionRequest, void>{
-    getModuleName(): string {
-        return ModuleNames.SendEmailAction;
-    }
-
     async trigger(engine: EngineActionInterface<SendEmailActionRequest>): Promise<void> {
         const smtpServer = await engine.getConfigurationAccessor().getStringValue(`smtp-server`, 'default-smtp-server');
 

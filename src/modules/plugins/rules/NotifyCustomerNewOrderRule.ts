@@ -1,29 +1,24 @@
 import {EngineRuleInterface, GallifreyPlugin, PluginType, RuleInterface} from "gallifrey-rules";
 import {NewOrdersMessageType, OrderItemType} from "../../providers/NewOrdersDispatcher";
-import {ModuleNames} from "../../../ModuleNames";
-import {CustomerInfoType} from "../data-objects/CustomerInfoDataObject";
-import {SendEmailActionRequest} from "../actions/SendEmailAction";
+import CustomerInfoDataObject, {CustomerInfoType} from "../data-objects/CustomerInfoDataObject";
+import SendEmailAction, {SendEmailActionRequest} from "../actions/SendEmailAction";
 
 /**
  * This defines the rule that runs to notify a customer when a new order is created
  */
 @GallifreyPlugin(PluginType.Rule)
 export default class NotifyCustomerNewOrderRule implements RuleInterface<NewOrdersMessageType> {
-    getModuleName(): string {
-        return ModuleNames.NotifyCustomerNewOrderRule;
-    }
-
     async trigger(engine: EngineRuleInterface<NewOrdersMessageType>): Promise<void> {
         // 1. Pull customer information using customerID
         const customerInfo = await engine.pullDataObject<string, CustomerInfoType>(
-            ModuleNames.CustomerInfoDataObject,
+            CustomerInfoDataObject.name,
             engine.getEventPayload().customerID);
 
         // 2. Create an email body
         const emailContents = this.getEmailContents(customerInfo, engine.getEventPayload());
 
         // 3. Send an email notifying new order
-        await engine.doAction<SendEmailActionRequest, void>(ModuleNames.SendEmailAction, {
+        await engine.doAction<SendEmailActionRequest, void>(SendEmailAction.name, {
             emailAddress: customerInfo.emailAddress,
             emailContents,
             recipientName: customerInfo.name,

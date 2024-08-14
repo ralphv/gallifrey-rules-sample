@@ -20,7 +20,7 @@
     "typescript": "^5.5.4"
   },
   "dependencies": {
-    "gallifrey-rules": "^0.1.6",
+    "gallifrey-rules": "^0.1.9",
     "kafkajs": "^2.2.4"
   }
 }

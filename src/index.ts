@@ -3,7 +3,8 @@ import {
     NamespaceSchema, NamespaceSchemaConsumer,
 } from "gallifrey-rules";
 import path from "node:path";
-import {ModuleNames} from "./ModuleNames";
+import NotifyCustomerNewOrderRule from "./modules/plugins/rules/NotifyCustomerNewOrderRule";
+import NewOrdersDispatcher from "./modules/providers/NewOrdersDispatcher";
 
 // define the schema that the engine needs to define what is expected from it
 const schema: NamespaceSchema = {
@@ -13,7 +14,7 @@ const schema: NamespaceSchema = {
         // we have 'orders' entity and on orders entity we have a single event 'new-order'
         "orders": {
             "new-order": {
-                $rules: [ModuleNames.NotifyCustomerNewOrderRule]
+                $rules: [NotifyCustomerNewOrderRule.name]
             }
         }
     },
@@ -23,7 +24,7 @@ const schema: NamespaceSchema = {
             // uses NewOrderDispatcher dispatcher to translate message into gallifrey-rules event
             name: 'new-orders-consumer',
             type: 'kafka',
-            eventDispatcher: ModuleNames.NewOrderDispatcher,
+            eventDispatcher: NewOrdersDispatcher.name,
             config: {
                 groupId: 'group-id-1',
                 topics: 'new-orders',

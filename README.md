@@ -26,6 +26,7 @@ This will install modules, build and start off the application locally.
 ```shell
 npm start
 ```
+`Note: this will fail because of missing environment variables and this is expected`
 
 To build your application docker image `gallifrey-rules-sample`
 ### Building docker image

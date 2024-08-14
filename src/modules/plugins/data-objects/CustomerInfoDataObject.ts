@@ -1,15 +1,10 @@
 import {DataObjectInterface, EngineDataObjectInterface, GallifreyPlugin, PluginType} from "gallifrey-rules";
-import {ModuleNames} from "../../../ModuleNames";
 
 /**
  * This defines a dummy DataObject that pulls customer information, given customer ID
  */
 @GallifreyPlugin(PluginType.DataObject)
 export default class CustomerInfoDataObject implements DataObjectInterface<string, CustomerInfoType>{
-    getModuleName(): string {
-        return ModuleNames.CustomerInfoDataObject;
-    }
-
     async get(engine: EngineDataObjectInterface<string>): Promise<CustomerInfoType> {
         // A dummy data object, it takes in the customerID and returns customer info
         const customerID = engine.getRequest();
