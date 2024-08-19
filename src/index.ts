@@ -5,6 +5,8 @@ import {
 import path from "node:path";
 import NotifyCustomerNewOrderRule from "./modules/plugins/rules/NotifyCustomerNewOrderRule";
 import NewOrdersDispatcher from "./modules/providers/NewOrdersDispatcher";
+import {EntityNames} from "./EntityNames";
+import {EventNames} from "./EventNames";
 
 // define the schema that the engine needs to define what is expected from it
 const schema: NamespaceSchema = {
@@ -12,8 +14,8 @@ const schema: NamespaceSchema = {
     $modulesPaths: ['$', path.join(__dirname, 'modules')], // load built in modules using '$' and sample app modules from modules folder
     $entities: {
         // we have 'orders' entity and on orders entity we have a single event 'new-order'
-        "orders": {
-            "new-order": {
+        [EntityNames.Orders]: {
+            [EventNames.NewOrder]: {
                 $rules: [NotifyCustomerNewOrderRule.name]
             }
         }
